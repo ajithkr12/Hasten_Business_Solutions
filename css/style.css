@@ -1,0 +1,1831 @@
+/*
+  Hasten Business Solutions LLP — style.css
+  Phase 2: Global design system (tokens + reusable component styles).
+  Section-specific layout (navbar, hero, services, etc.) is built in later
+  phases on top of the primitives defined here.
+*/
+
+/* ---------------------------------------------------------------------- */
+/* Design tokens                                                          */
+/* ---------------------------------------------------------------------- */
+
+:root {
+  /* Brand colors — fixed identity, do not substitute or add new hues */
+  --color-cyan: #08b4d1;
+  --color-cyan-hover: #0796b0;
+  /* The brand cyan only hits 2.48:1 against white — fails WCAG AA's 4.5:1
+     for text. These are the same hue/saturation, darkened, for any cyan
+     that renders as text or an icon glyph on a light background (buttons,
+     borders, backgrounds, and cyan-on-navy like Why Us are unaffected and
+     keep using --color-cyan directly). Darkened enough to still clear 4.5:1
+     against the palest tinted panels (e.g. #e2f4f9), not just pure white. */
+  --color-cyan-text: #057285;
+  --color-cyan-text-hover: #046171;
+  --color-dark: #172126;
+  --color-navy: #0d1b24;
+  --color-light: #f5fafc;
+  --color-white: #ffffff;
+  --color-gray: #66727a;
+
+  /* Supporting tones — tinted opacities of the brand colors above only */
+  --color-border: rgba(23, 33, 38, 0.1);
+  --color-border-strong: rgba(23, 33, 38, 0.18);
+  --color-border-on-dark: rgba(245, 250, 252, 0.16);
+  --color-surface-tint: rgba(8, 180, 209, 0.08);
+
+  --shadow-resting: 0 1px 2px rgba(13, 27, 36, 0.05);
+  --shadow-raised: 0 20px 40px -14px rgba(13, 27, 36, 0.22);
+
+  /* Radius — restrained: sharp controls, one modest size for cards */
+  --radius-sm: 4px;
+  --radius-btn: 10px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --transition-fast: 160ms ease;
+  --transition-base: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Type */
+  --font-display: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Layout */
+  --container-max: 1240px;
+  --gutter: 1.5rem;
+  --section-space: clamp(4rem, 3rem + 4vw, 7.5rem);
+  --section-space-tight: clamp(2.5rem, 2rem + 2vw, 4rem);
+  /* Measured with webfonts loaded (Manrope/Inter add ~30px over the fallback-
+     font render) — must stay ≥ the tallest (unscrolled) navbar state. */
+  --nav-height: 148px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Reset / base                                                           */
+/* ---------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-dark);
+  background: var(--color-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-cyan-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-cyan-text-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+/* Bootstrap's own .btn:focus-visible and .nav-link:focus-visible rules
+   zero the outline and swap in a Bootstrap-blue box-shadow ring instead;
+   both match at the same specificity as the selectors below, so being
+   later in the cascade is what lets these win and keep the brand outline
+   visible for keyboard focus everywhere the base rule would otherwise be
+   overridden. */
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Lets keyboard users jump past the repeated nav block straight to page
+   content. Off-screen until it receives focus, then appears above the
+   fixed navbar. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  z-index: 1100;
+  transform: translateY(-150%);
+  background: var(--color-navy);
+  color: var(--color-light);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(1rem);
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+/* Programmatic focus target for the skip link (tabindex="-1"), not a
+   normal tab stop — the jump itself is the feedback, so no outline. */
+#main:focus {
+  outline: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Layout primitives                                                      */
+/* ---------------------------------------------------------------------- */
+
+.container-custom {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-space);
+}
+
+.section--tight {
+  padding-block: var(--section-space-tight);
+}
+
+.section--light {
+  background: var(--color-light);
+}
+
+.section--dark {
+  background: var(--color-navy);
+  color: var(--color-light);
+}
+
+/* Anchored sections must clear the fixed navbar when jumped/scrolled to. */
+section[id] {
+  scroll-margin-top: var(--nav-height);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Typography primitives                                                  */
+/* ---------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: inherit;
+}
+
+/* H1 — reserved for the single hero headline; nothing else on the page
+   should reach this size or weight. */
+h1 {
+  font-size: clamp(2.75rem, 2.05rem + 3vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* H2 — section headings. .section-heading lets the same treatment apply
+   to a non-heading element on the rare occasion one is needed. */
+h2,
+.section-heading {
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  line-height: 1.15;
+  max-width: 42ch;
+}
+
+/* H3 — service and subsection headings. */
+h3 {
+  font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--color-gray);
+  max-width: 62ch;
+  font-size: 1.0625rem;
+}
+
+.section--dark .section-subtitle {
+  color: rgba(245, 250, 252, 0.72);
+}
+
+.section-subtitle strong {
+  color: var(--color-dark);
+  font-weight: 700;
+}
+
+.section--dark .section-subtitle strong {
+  color: var(--color-white);
+}
+
+/* Eyebrow: a short cyan rule + label, used sparingly above a heading —
+   not a decorative default, only where it clarifies what a section is. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--color-cyan);
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--color-cyan);
+  flex-shrink: 0;
+}
+
+/* Sampled the hero video's brightest realistic frame under the darkest
+   overlay stop: brand cyan lands at ~3.97:1 there, just under 4.5:1. A
+   slightly lighter same-hue tint clears it without changing the base
+   .eyebrow color used on solid backgrounds elsewhere. */
+.hero .eyebrow {
+  color: #09c2e1;
+}
+
+.hero .eyebrow::before {
+  background: #09c2e1;
+}
+
+.section--dark .eyebrow {
+  color: var(--color-cyan);
+}
+
+/* Pill eyebrow — an alternative to the dash-rule eyebrow above, for
+   sections that want a softer, more contained label (e.g. About). */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-cyan-text);
+  background: var(--color-surface-tint);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+}
+
+/* Outlined numeral marker — used for genuinely sequential or enumerated
+   content (process steps, indexed lists), never as pure decoration. */
+.index-marker {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 1.6rem + 2vw, 3rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-cyan);
+}
+
+.section--dark .index-marker {
+  -webkit-text-stroke: 1.5px var(--color-cyan);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Buttons                                                                */
+/* ---------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.6rem 0.6rem 0.6rem 1.5rem;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Inset icon badge — every button ends in a small rounded-square badge
+   with a directional arrow, always kept at solid contrast against its
+   own button's current background (including on hover), rather than a
+   single fixed color pairing. */
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 1rem;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-primary {
+  background-color: var(--color-cyan);
+  border-color: var(--color-cyan);
+  color: var(--color-dark);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-color: var(--color-cyan-hover);
+  border-color: var(--color-cyan-hover);
+  color: var(--color-dark);
+}
+
+.btn-primary .btn__icon {
+  background: var(--color-white);
+  color: var(--color-cyan-text);
+}
+
+.btn-outline-dark {
+  background-color: transparent;
+  border-color: var(--color-dark);
+  color: var(--color-dark);
+}
+
+.btn-outline-dark:hover,
+.btn-outline-dark:focus-visible {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+.btn-outline-dark .btn__icon {
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+.btn-outline-dark:hover .btn__icon,
+.btn-outline-dark:focus-visible .btn__icon {
+  background: var(--color-white);
+  color: var(--color-dark);
+}
+
+/* Variant for use on navy/dark section backgrounds (hero, CTA, footer) */
+.btn-outline-light {
+  background-color: transparent;
+  border-color: var(--color-border-on-dark);
+  color: var(--color-light);
+}
+
+.btn-outline-light:hover,
+.btn-outline-light:focus-visible {
+  background-color: var(--color-light);
+  border-color: var(--color-light);
+  color: var(--color-navy);
+}
+
+.btn-outline-light .btn__icon {
+  background: var(--color-light);
+  color: var(--color-navy);
+}
+
+.btn-outline-light:hover .btn__icon,
+.btn-outline-light:focus-visible .btn__icon {
+  background: var(--color-navy);
+  color: var(--color-light);
+}
+
+/* Text link styled as an action, e.g. "Learn More" on a service card */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-cyan-text);
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+}
+
+.link-arrow:hover {
+  color: var(--color-cyan-text-hover);
+}
+
+.link-arrow i,
+.link-arrow .bi {
+  transition: transform var(--transition-fast);
+}
+
+.link-arrow:hover i,
+.link-arrow:hover .bi {
+  transform: translateX(4px);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Cards                                                                  */
+/* ---------------------------------------------------------------------- */
+
+.card-surface {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-resting);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.card-surface--interactive:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-cyan);
+  box-shadow: var(--shadow-raised);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Forms                                                                  */
+/* ---------------------------------------------------------------------- */
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-dark);
+  margin-bottom: 0.4rem;
+}
+
+.form-control {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-btn);
+  padding: 0.5rem 1rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 3px var(--color-surface-tint);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Icons                                                                  */
+/* ---------------------------------------------------------------------- */
+
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-tint);
+  color: var(--color-cyan-text);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.section--dark .icon-badge {
+  background: rgba(8, 180, 209, 0.14);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Hero                                                                   */
+/* ---------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--color-light);
+  overflow: hidden;
+  background-color: var(--color-navy);
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Diagonal, left-weighted scrim: darkest behind the text column and the
+   navbar, easing toward transparent so the video reads clearly on the right. */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(13, 27, 36, 0.92) 0%,
+    rgba(13, 27, 36, 0.8) 30%,
+    rgba(13, 27, 36, 0.4) 60%,
+    rgba(13, 27, 36, 0.12) 85%
+  );
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--nav-height) + 2rem);
+  padding-bottom: 3rem;
+}
+
+.hero__text {
+  max-width: 620px;
+}
+
+.hero__text h1 {
+  color: var(--color-white);
+}
+
+.hero__lede {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: rgba(245, 250, 252, 0.82);
+  max-width: 54ch;
+  margin: 1.5rem 0 2.25rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero__controls {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 1.75rem;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hero__control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-on-dark);
+  background: rgba(13, 27, 36, 0.4);
+  color: var(--color-light);
+  font-size: 1rem;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.hero__control-btn:hover,
+.hero__control-btn:focus-visible {
+  background: rgba(13, 27, 36, 0.65);
+  border-color: var(--color-cyan);
+}
+
+@media (max-width: 767.98px) {
+  .hero {
+    min-height: 85vh;
+  }
+
+  .hero__controls {
+    bottom: 1.25rem;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Value strip                                                            */
+/* ---------------------------------------------------------------------- */
+
+/* Faint dot-grid texture — a subtle break from the flat white sections
+   around it, kept low-contrast enough to stay decorative rather than
+   competing with the intro text or grid cards on top of it. */
+/* Tileable wave — a repeating SVG pattern rather than a CSS gradient,
+   since gradients can only produce straight/radial lines, not curves.
+   One full sine period per 60×30 tile, tiled edge-to-edge. */
+.value-strip {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='48' viewBox='0 0 80 48'%3E%3Cpath d='M0 24 Q20 6 40 24 T80 24' fill='none' stroke='%2308b4d1' stroke-opacity='0.1' stroke-width='1.5'/%3E%3C/svg%3E")
+      0 0 / 80px 48px,
+    var(--color-white);
+  border-block: 1px solid var(--color-border);
+}
+
+.value-strip__intro h2 {
+  margin: 1rem 0 1rem;
+}
+
+.value-strip__subtitle {
+  margin-bottom: 1.75rem;
+}
+
+.value-strip__cta {
+  width: fit-content;
+}
+
+/* Mosaic grid: a true checkerboard — label,visual,label in row 1,
+   visual,label,visual in row 2 — with a wider center column so the
+   middle cell of each row (visual / label) reads as the featured one. */
+.value-strip__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 576px) {
+  .value-strip__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .value-strip__grid {
+    grid-template-columns: 1fr 1.3fr 1fr;
+  }
+}
+
+.value-strip__card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed, not min-height/100% — grid rows auto-size to their tallest
+     cell, and the two rows' content (photos vs. short stat text)
+     differs enough that "stretch to row" alone left row 1 taller than
+     row 2. A shared fixed height makes every card equal regardless of
+     which row it's in. */
+  height: 220px;
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.value-strip__card--stat {
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: center;
+  /* Solid, not the semi-transparent --color-surface-tint token — this
+     card sits directly on the section's wave-texture background, and a
+     translucent tint let that texture show through the card itself.
+     #EBF9FB is that same tint's exact composited color over white. */
+  background: #ebf9fb;
+}
+
+.value-strip__stat-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  line-height: 1;
+  color: var(--color-cyan-text);
+  margin: 0;
+}
+
+.value-strip__stat-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  max-width: 16ch;
+  margin: 0;
+}
+
+.value-strip__card--visual {
+  padding: 0;
+  overflow: hidden;
+}
+
+.value-strip__card--visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------------------------------------------------------------------- */
+/* About                                                                  */
+/* ---------------------------------------------------------------------- */
+
+.about h2 {
+  margin-bottom: 1.25rem;
+}
+
+.about .section-subtitle {
+  margin-bottom: 1.75rem;
+}
+
+.about__media {
+  position: relative;
+  margin: 1.5rem 1.25rem 2rem;
+}
+
+.about__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Floating badges reuse real, already-approved phrases from the value strip
+   (see Phase 6) rather than invented stats — the structural device (a card
+   overlapping the photo) is what's borrowed, not any fabricated numbers. */
+.about__badge {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  padding: 0.75rem 1.1rem;
+  white-space: nowrap;
+}
+
+.about__badge--top {
+  top: -1.25rem;
+  left: 1.5rem;
+}
+
+.about__badge--bottom {
+  bottom: -1.25rem;
+  right: 1.5rem;
+}
+
+.about__badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-tint);
+  color: var(--color-cyan-text);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.about__badge-text {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-dark);
+}
+
+/* A parallel set of qualities, not a sequence — paired with an icon rather
+   than a numeral, since order doesn't matter here (see Phase 10/11 for
+   genuine sequences, which use the outlined index-marker instead). Styled
+   as bordered tiles so the row reads as one structured group. */
+.about__features {
+  margin: 0 0 2.25rem;
+}
+
+.about__feature {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.about__feature:hover {
+  background: var(--color-white);
+  border-color: var(--color-cyan);
+}
+
+.about__feature span {
+  font-weight: 600;
+  font-size: 0.925rem;
+  color: var(--color-dark);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Services                                                               */
+/* ---------------------------------------------------------------------- */
+
+.services .section-subtitle {
+  margin-bottom: 3rem;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.service-card__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.service-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base);
+}
+
+.service-card:hover .service-card__media img {
+  transform: scale(1.05);
+}
+
+/* Floats as a "sticker" straddling the photo/body seam, connecting the two
+   instead of stacking icon-then-text flatly. White fill keeps it legible
+   over any photo. */
+.service-card__icon-float {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 1.75rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cyan);
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.service-card__body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1rem 1.75rem 1.75rem;
+}
+
+.service-card__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.service-card__title-row h3 {
+  margin-bottom: 0;
+}
+
+/* Same outlined-numeral device as the index-marker (Process/Why Us), scaled
+   down for card context rather than sharing the class outright. */
+.service-card__number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-cyan-text);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.service-card__body p {
+  color: var(--color-gray);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.service-card:hover .link-arrow i {
+  transform: translateX(4px);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Service detail modal                                                   */
+/* ---------------------------------------------------------------------- */
+
+.service-modal .modal-content {
+  border: none;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.service-modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-white);
+  border-radius: var(--radius-pill);
+  opacity: 1;
+}
+
+.service-modal__media {
+  position: relative;
+  min-height: 260px;
+}
+
+.service-modal__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-modal__body {
+  padding: 2.5rem;
+}
+
+.service-modal__number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-cyan);
+  margin-bottom: 0.85rem;
+}
+
+.service-modal__body h3 {
+  margin-bottom: 0.85rem;
+}
+
+.service-modal__body > p {
+  color: var(--color-gray);
+}
+
+.service-modal__subheading {
+  font-size: 1rem;
+  margin: 1.5rem 0 0.85rem;
+}
+
+.service-modal__list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.service-modal__list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+  color: var(--color-gray);
+}
+
+.service-modal__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-cyan);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Why Choose Hasten                                                      */
+/* ---------------------------------------------------------------------- */
+
+.why-us h2 {
+  margin-bottom: 3rem;
+  max-width: none;
+}
+
+/* Quiet grid items, not cards — a thin top rule is enough structure on a
+   dark background; the large outlined numeral is this section's one bold
+   device (see restraint principle: spend boldness in one place). */
+.why-us__item {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border-on-dark);
+  height: 100%;
+}
+
+.why-us__item .index-marker {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.why-us__item h3 {
+  margin-bottom: 0.5rem;
+}
+
+.why-us__item p {
+  color: rgba(245, 250, 252, 0.72);
+  font-size: 0.95rem;
+  max-width: 32ch;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Testimonials                                                           */
+/* ---------------------------------------------------------------------- */
+
+.testimonials h2 {
+  margin-bottom: 1.25rem;
+}
+
+.testimonials .section-subtitle {
+  margin-bottom: 3rem;
+}
+
+.testimonials__row {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  /* Breathing room so the center card's lift/shadow and the side cards'
+     downward shift aren't clipped by the carousel's own overflow:hidden. */
+  padding-block: 16px;
+}
+
+.testimonial-card {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-resting);
+  padding: 2rem;
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    opacity var(--transition-base), border-color var(--transition-base);
+}
+
+.testimonial-card__quote-icon {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-cyan-text);
+  margin-bottom: 1rem;
+}
+
+.testimonial-card__quote {
+  color: var(--color-dark);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.testimonial-card__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-tint);
+  color: var(--color-cyan);
+  font-size: 1.15rem;
+}
+
+.testimonial-card__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0;
+}
+
+.testimonial-card__role {
+  color: var(--color-gray);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* When a slide shows exactly three cards (desktop), give the middle one the
+   reference's "featured center" emphasis — pure CSS, no carousel rebuild:
+   nth-child(2):nth-last-child(2) is only ever true in a 3-item row. */
+/* The center card of a 3-up slide is genuinely wider (flex-grow), not just
+   scaled, and lifts above the row while the flanking cards sit narrower and
+   pushed down — reads as a fanned stack with one clear focal card, closer
+   to the reference's layered composition than a flat equal-width row. */
+.testimonials__row > .testimonial-card:nth-child(2):nth-last-child(2) {
+  flex-grow: 1.15;
+  transform: translateY(-10px);
+  border-color: var(--color-cyan);
+  box-shadow: var(--shadow-raised);
+  z-index: 2;
+}
+
+@supports selector(:has(*)) {
+  /* Cards stay uniformly white (the section itself now carries the light
+     tint) — side cards recede via size/shadow/position only, not color. */
+  .testimonials__row:has(> .testimonial-card:nth-child(3))
+    > .testimonial-card:not(:nth-child(2)) {
+    flex-grow: 0.9;
+    box-shadow: none;
+    transform: translateY(10px);
+    z-index: 1;
+  }
+}
+
+.testimonials__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.testimonials__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-white);
+  color: var(--color-dark);
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.testimonials__nav-btn:hover,
+.testimonials__nav-btn:focus-visible {
+  background: var(--color-cyan);
+  border-color: var(--color-cyan);
+}
+
+/* Override Bootstrap's absolute-positioned, full-height default indicator
+   bars — these sit in normal flow, styled as small quiet dots. */
+.carousel-indicators.testimonials__indicators {
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.testimonials__indicators [data-bs-target] {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border-strong);
+  border: none;
+  opacity: 1;
+  text-indent: -9999px;
+  transition: background-color var(--transition-fast), width var(--transition-fast);
+}
+
+.testimonials__indicators [data-bs-target].active {
+  background-color: var(--color-cyan);
+  width: 22px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* CTA                                                                    */
+/* ---------------------------------------------------------------------- */
+
+/* Centered on purpose: one symmetric conversion moment (a heading, a line
+   of text, two equally-weighted buttons), not a narrative block — unlike
+   the left-aligned editorial sections around it. */
+.cta {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cta__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Navy scrim over the photo — 80% opacity, calculated against the
+   brightest realistic pixel behind the text so white/near-white text
+   keeps well over 4.5:1 (verified ~10:1 for the heading, ~6:1 for the
+   72%-opacity subtitle) regardless of where the crop lands. */
+.cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 27, 36, 0.8);
+  z-index: 0;
+}
+
+.cta__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 640px;
+  height: 640px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(8, 180, 209, 0.16) 0%, rgba(8, 180, 209, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta__content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.cta h2 {
+  margin-bottom: 1.25rem;
+  max-width: none;
+}
+
+.cta .section-subtitle {
+  margin: 0 auto 2.5rem;
+}
+
+.cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Contact                                                                */
+/* ---------------------------------------------------------------------- */
+
+.contact .section-subtitle {
+  margin-bottom: 3rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.contact-info__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* Bigger, softer icon tile than the standard .icon-badge — this is the
+   section's one enlarged accent, so the list reads with more presence. */
+.contact-info__item .icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  font-size: 1.5rem;
+}
+
+.contact-info__label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-gray);
+  margin: 0 0 0.25rem;
+}
+
+.contact-info__value {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--color-dark);
+}
+
+a.contact-info__value {
+  color: var(--color-cyan-text);
+}
+
+a.contact-info__value:hover {
+  color: var(--color-cyan-text-hover);
+}
+
+/* Map container — fixed heights per breakpoint (not the iframe's own
+   width/height attributes, which stay untouched) so it resizes without
+   distorting the embed. */
+.contact-map {
+  margin-top: 3rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-resting);
+}
+
+.contact-map iframe {
+  display: block;
+  width: 100%;
+  height: 450px;
+}
+
+@media (max-width: 767.98px) {
+  .contact-map iframe {
+    height: 350px;
+  }
+}
+
+.contact-form-panel {
+  background: var(--color-white);
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--shadow-raised);
+  padding: 2.5rem;
+}
+
+.contact-form .form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.contact-form__success {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.contact-form__success-icon {
+  margin: 0 auto 1.25rem;
+}
+
+.contact-form__success h3 {
+  margin-bottom: 0.5rem;
+}
+
+.contact-form__success p {
+  color: var(--color-gray);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Footer                                                                 */
+/* ---------------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--color-navy);
+  color: var(--color-light);
+  padding-block: var(--section-space);
+}
+
+.site-footer__top {
+  margin-bottom: 3rem;
+}
+
+/* The real logo has dark strokes/subtext (icon linework, "BUSINESS
+   SOLUTIONS") that disappear against a navy background — a light backing
+   plate fixes legibility without editing the logo asset itself. */
+.site-footer__brand {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1.1rem;
+  background: var(--color-light);
+  border-radius: var(--radius-sm);
+}
+
+.site-footer__logo {
+  height: 44px;
+  width: auto;
+}
+
+.site-footer__blurb {
+  color: rgba(245, 250, 252, 0.72);
+  font-size: 0.95rem;
+  max-width: 32ch;
+  margin: 0;
+}
+
+.site-footer__heading {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.site-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.site-footer__links li {
+  color: rgba(245, 250, 252, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.site-footer__links a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.site-footer__links a:hover {
+  color: var(--color-cyan);
+}
+
+.site-footer__social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.site-footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-on-dark);
+  color: var(--color-light);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.site-footer__social-link:hover {
+  background: var(--color-cyan);
+  border-color: var(--color-cyan);
+  color: var(--color-dark);
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border-on-dark);
+}
+
+.site-footer__copyright,
+.site-footer__credit {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: rgba(245, 250, 252, 0.6);
+}
+
+.site-footer__credit a {
+  color: rgba(245, 250, 252, 0.8);
+  text-decoration: underline;
+}
+
+.site-footer__credit a:hover {
+  color: var(--color-cyan);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Navigation                                                             */
+/* ---------------------------------------------------------------------- */
+
+/* .container-custom isn't one of Bootstrap's recognized navbar container
+   classes (.container/.container-fluid/.container-{bp}), so it never
+   receives Bootstrap's built-in flex-row treatment for the brand/toggler/
+   collapse. Replicate it here, scoped to the navbar only. */
+.site-nav > .container-custom {
+  display: flex;
+  flex-wrap: inherit;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Bootstrap's base .navbar-collapse sets flex-grow:1 for the mobile full-
+   width stack, and .navbar-expand-lg only resets flex-basis, not
+   flex-grow — left alone, the collapse block swallows all the space
+   between the logo and the CTA instead of sizing to the nav links. */
+@media (min-width: 992px) {
+  .site-nav .navbar-collapse {
+    flex-grow: 0;
+  }
+}
+
+/* Transparent-over-hero state relies on the hero's own dark overlay (Phase 5)
+   for text/logo contrast — the navbar itself adds no scrim of its own. */
+.site-nav {
+  --bs-navbar-color: rgba(245, 250, 252, 0.85);
+  --bs-navbar-hover-color: #ffffff;
+  --bs-navbar-active-color: #ffffff;
+  --bs-navbar-toggler-border-color: transparent;
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(245,250,252,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  --bs-navbar-nav-link-padding-x: 1rem;
+  padding-block: 1.65rem;
+  background-color: transparent;
+  transition: background-color var(--transition-base), box-shadow var(--transition-base),
+    padding-block var(--transition-base);
+}
+
+.site-nav.is-scrolled {
+  --bs-navbar-color: var(--color-dark);
+  --bs-navbar-hover-color: var(--color-cyan-text);
+  --bs-navbar-active-color: var(--color-cyan-text);
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(23,33,38,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-color: var(--color-white);
+  padding-block: 1.15rem;
+  box-shadow: 0 1px 0 var(--color-border), 0 16px 32px -20px rgba(13, 27, 36, 0.28);
+}
+
+.site-nav__logo {
+  height: 80px;
+  width: auto;
+}
+
+.site-nav .nav-link {
+  position: relative;
+  font-weight: 400;
+}
+
+.site-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 0.2rem;
+  height: 2px;
+  background: var(--color-cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-fast);
+}
+
+.site-nav .nav-link:hover::after,
+.site-nav .nav-link.active::after {
+  transform: scaleX(1);
+}
+
+.site-nav .nav-link.active {
+  font-weight: 600;
+}
+
+.site-nav__cta {
+  flex-shrink: 0;
+}
+
+@media (max-width: 991.98px) {
+  .site-nav .navbar-collapse {
+    --bs-navbar-color: var(--color-dark);
+    --bs-navbar-hover-color: var(--color-cyan-text);
+    --bs-navbar-active-color: var(--color-cyan-text);
+    background: var(--color-white);
+    margin-top: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .site-nav .nav-link::after {
+    display: none;
+  }
+
+  .site-nav .nav-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .site-nav .nav-item:last-child {
+    border-bottom: none;
+  }
+
+  .site-nav__cta {
+    margin: 1rem 0 0;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Scroll reveal (Phase 20)                                               */
+/* ---------------------------------------------------------------------- */
+
+/* Scroll-triggered: script.js adds .reveal only once it's also set up the
+   IntersectionObserver to remove it, so content is never left hidden
+   without JS. The global prefers-reduced-motion override below collapses
+   the transition to ~0, so reduced-motion users get an instant, static
+   appearance rather than a disabled-looking permanent hide. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Load-triggered hero fade-up. Gated behind .js (added synchronously in
+   <head>, before first paint) so there's no flash of visible-then-hidden
+   content, and so a page with JS blocked simply renders the hero normally
+   instead of hiding it. */
+.js .hero__text {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.js .hero__text.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* About page (about.html)                                                */
+/* ---------------------------------------------------------------------- */
+
+/* Interior-page banner — a lighter substitute for the homepage's video
+   hero. Padding-top clears the fixed navbar the same way anchored
+   sections do elsewhere on the site. */
+.page-header {
+  background: var(--color-navy);
+  color: var(--color-light);
+  padding-top: calc(var(--nav-height) + 3rem);
+  padding-bottom: 3.5rem;
+}
+
+.page-header h1 {
+  color: var(--color-white);
+  max-width: 32ch;
+}
+
+.page-header__lede {
+  color: rgba(245, 250, 252, 0.78);
+  font-size: 1.0625rem;
+  max-width: 54ch;
+  margin: 1.25rem 0 0;
+}
+
+.pill-badge--on-dark {
+  color: var(--color-cyan);
+  background: rgba(8, 180, 209, 0.14);
+}
+
+.vision-mission h2 {
+  margin-bottom: 2.5rem;
+}
+
+.vision-mission__card {
+  height: 100%;
+  padding: 2rem;
+  border: 1px solid var(--color-border-on-dark);
+  border-radius: var(--radius-md);
+}
+
+.vision-mission__card .icon-badge {
+  background: rgba(8, 180, 209, 0.14);
+  margin-bottom: 1.25rem;
+}
+
+.vision-mission__card h3 {
+  color: var(--color-white);
+  margin-bottom: 0.75rem;
+}
+
+.vision-mission__card p {
+  color: rgba(245, 250, 252, 0.78);
+  margin: 0;
+}
+
+.values h2 {
+  margin-bottom: 2.5rem;
+}
+
+.values__card {
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.values__card .icon-badge {
+  margin: 0 auto 1.25rem;
+}
+
+.values__card h3 {
+  margin-bottom: 0.65rem;
+}
+
+.values__card p {
+  color: var(--color-gray);
+  font-size: 0.925rem;
+  margin: 0;
+}
+
+/* FAQ accordion — Bootstrap's accordion re-themed via its own CSS custom
+   properties (colors, radius) plus a swapped +/− icon (Bootstrap Icons
+   glyphs instead of Bootstrap's default chevron SVG) so it reads as part
+   of this design system rather than a stock component. */
+.faq {
+  /* A more distinctly blue-tinted background than the standard
+     --color-light sections around it — the same tint used for
+     pill-badges/icon-badges, composited over the page's white background. */
+  background: var(--color-surface-tint);
+}
+
+/* The pill-badge shares that same tint by default — give it a white
+   plate here so it doesn't blend into its own section background. */
+.faq .pill-badge {
+  background: var(--color-white);
+}
+
+.faq h2 {
+  margin-bottom: 0.75rem;
+}
+
+.faq .section-subtitle {
+  margin-bottom: 2.5rem;
+}
+
+.faq__accordion {
+  --bs-accordion-border-color: var(--color-border);
+  --bs-accordion-border-radius: var(--radius-md);
+  --bs-accordion-inner-border-radius: calc(var(--radius-md) - 1px);
+  --bs-accordion-btn-padding-x: 1.5rem;
+  --bs-accordion-btn-padding-y: 1.25rem;
+  --bs-accordion-body-padding-x: 1.5rem;
+  --bs-accordion-body-padding-y: 0 1.25rem 1.5rem;
+  --bs-accordion-active-bg: var(--color-surface-tint);
+  --bs-accordion-active-color: var(--color-dark);
+  --bs-accordion-btn-focus-border-color: var(--color-cyan);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 3px var(--color-surface-tint);
+  max-width: 860px;
+}
+
+.faq__accordion .accordion-item {
+  margin-bottom: 1rem;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+}
+
+.faq__accordion .accordion-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq__accordion .accordion-button {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.faq__accordion .accordion-button::after {
+  font-family: "bootstrap-icons" !important;
+  content: "\f64d";
+  background-image: none !important;
+  width: auto;
+  height: auto;
+  font-size: 1.1rem;
+  color: var(--color-dark);
+}
+
+.faq__accordion .accordion-button:not(.collapsed)::after {
+  content: "\f63b";
+  color: var(--color-cyan-text);
+}
+
+.faq__accordion .accordion-body {
+  color: var(--color-gray);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Accessibility                                                          */
+/* ---------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

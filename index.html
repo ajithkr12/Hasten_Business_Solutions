@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Runs synchronously before first paint so the hero's fade-up starting
+    // state (scoped to .js) never flashes visible-then-hidden. If JS is
+    // blocked, this never runs and the hero stays in its normal, visible
+    // state — the animation is additive, not load-bearing for content.
+    document.documentElement.classList.add("js");
+  </script>
+  <title>Hasten Business Solutions LLP | Accounting, Taxation &amp; Business Solutions</title>
+  <meta
+    name="description"
+    content="Hasten Business Solutions LLP provides professional virtual accounting, taxation, GST, compliance, auditing, financial reporting and business support solutions.">
+
+  <!-- Placeholder — replace with the live production domain before launch -->
+  <link rel="canonical" href="https://www.hastenbusinesssolutions.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hasten Business Solutions LLP | Accounting, Taxation &amp; Business Solutions">
+  <meta
+    property="og:description"
+    content="Professional virtual accounting, taxation, GST, compliance, auditing, financial reporting and business support solutions.">
+  <meta property="og:image" content="https://www.hastenbusinesssolutions.com/assets/images/hero-poster.webp">
+  <!-- Placeholder — replace with the live production domain before launch -->
+  <meta property="og:url" content="https://www.hastenbusinesssolutions.com/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hasten Business Solutions LLP | Accounting, Taxation &amp; Business Solutions">
+  <meta
+    name="twitter:description"
+    content="Professional virtual accounting, taxation, GST, compliance, auditing, financial reporting and business support solutions.">
+  <meta name="twitter:image" content="https://www.hastenbusinesssolutions.com/assets/images/hero-poster.webp">
+
+  <!-- Favicon (derived from the logo's icon mark — logo file itself untouched) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/images/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+
+  <!-- Structured data — LocalBusiness, using only the company details supplied
+       in task.md (no invented fields: no openingHours, aggregateRating, etc.) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Hasten Business Solutions LLP",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "KM SQUARE PALACHUVAD, 27/1901, Ambadimoola Rd, Thrikkakara, Vazhakkala, Kochi, Kakkanad",
+      "addressRegion": "Kerala",
+      "postalCode": "682030",
+      "addressCountry": "IN"
+    },
+    "telephone": "+918078802553",
+    "email": "hastenbs@gmail.com",
+    "sameAs": [
+      "https://www.facebook.com/hastenbs/",
+      "https://www.instagram.com/hastenbs/",
+      "https://in.linkedin.com/company/hastenbiz"
+    ]
+  }
+  </script>
+
+  <!-- Fonts: Poppins (display/headings + body/UI). Loaded non-render-
+       blocking (preload + media=print swap trick) since font-display:swap
+       already means the fallback font paints immediately and Poppins swaps
+       in once it arrives — there's no reason to also block first paint on
+       fetching this stylesheet. <noscript> covers JS-disabled visitors. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preload"
+    as="style"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap"
+      rel="stylesheet">
+  </noscript>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous">
+
+  <!-- Bootstrap Icons: also loaded non-render-blocking — every use on this
+       page is a decorative aria-hidden glyph, so a brief empty box before
+       the icon font arrives is a non-issue, unlike Bootstrap's own CSS
+       (which the whole layout depends on and must stay render-blocking to
+       avoid a real flash of unstyled content). -->
+  <link
+    rel="preload"
+    as="style"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet">
+  </noscript>
+
+  <!-- Site styles -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header>
+    <nav class="navbar navbar-expand-lg site-nav fixed-top" id="siteNav" aria-label="Primary">
+      <div class="container-custom">
+        <a class="navbar-brand site-nav__brand" href="#home">
+          <img src="assets/images/hasten_logo.png" alt="Hasten Business Solutions LLP" class="site-nav__logo">
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#siteNavCollapse"
+          aria-controls="siteNavCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="siteNavCollapse">
+          <ul class="navbar-nav site-nav__links">
+            <li class="nav-item"><a class="nav-link active" href="#home" data-nav-link>Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about" data-nav-link>About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services" data-nav-link>Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#why-us" data-nav-link>Why Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="#testimonials" data-nav-link>Testimonials</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html" data-nav-link>Contact</a></li>
+          </ul>
+          <a href="#contact" class="btn btn-primary site-nav__cta d-lg-none" data-nav-link><span class="btn__label">Get Consultation</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+        </div>
+        <a href="#contact" class="btn btn-primary site-nav__cta d-none d-lg-inline-flex" data-nav-link><span class="btn__label">Get Consultation</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section id="home" class="hero">
+      <div class="hero__media">
+        <video
+          class="hero__video"
+          poster="assets/images/hero-poster.webp"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          fetchpriority="high">
+          <source src="assets/videos/hero-business.mp4" type="video/mp4">
+        </video>
+        <div class="hero__overlay"></div>
+      </div>
+
+      <div class="hero__content container-custom">
+        <div class="hero__text">
+          <p class="eyebrow">HASTEN BUSINESS SOLUTIONS LLP</p>
+          <h1>Smart Business Solutions.<br>Built for Your Growth.</h1>
+          <p class="hero__lede">
+            Professional accounting, taxation, compliance, operations and digital
+            solutions designed to help businesses stay efficient, compliant and
+            ready for growth.
+          </p>
+          <div class="hero__actions">
+            <a href="#contact" class="btn btn-primary"><span class="btn__label">Get a Consultation</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+            <a href="#services" class="btn btn-outline-light"><span class="btn__label">Explore Services</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__controls" role="group" aria-label="Background video controls">
+        <button type="button" class="hero__control-btn" id="heroPlayToggle" aria-label="Pause background video">
+          <i class="bi bi-pause-fill" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="hero__control-btn" id="heroMuteToggle" aria-label="Unmute background video">
+          <i class="bi bi-volume-mute-fill" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="section value-strip">
+      <div class="container-custom">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-5">
+            <div class="value-strip__intro">
+              <p class="pill-badge">Our Value</p>
+              <h2>One Partner. Multiple Business Solutions.</h2>
+              <p class="section-subtitle value-strip__subtitle">
+                One accountable team for accounting, compliance and operations —
+                instead of juggling a different vendor for each.
+              </p>
+              <a href="#contact" class="btn btn-primary value-strip__cta"><span class="btn__label">Get a Consultation</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="value-strip__grid">
+              <div class="value-strip__card value-strip__card--stat">
+                <p class="value-strip__stat-number">15+</p>
+                <p class="value-strip__stat-label">Years of Experience</p>
+              </div>
+              <div class="value-strip__card value-strip__card--visual">
+                <img src="assets/images/value-strip/people.webp" alt="Team of colleagues smiling together in an office" loading="lazy">
+              </div>
+              <div class="value-strip__card value-strip__card--stat">
+                <p class="value-strip__stat-number">100+</p>
+                <p class="value-strip__stat-label">Clients Served</p>
+              </div>
+              <div class="value-strip__card value-strip__card--visual">
+                <img src="assets/images/value-strip/partnership.webp" alt="Two business partners shaking hands" loading="lazy">
+              </div>
+              <div class="value-strip__card value-strip__card--stat">
+                <p class="value-strip__stat-number">100%</p>
+                <p class="value-strip__stat-label">Compliance Accuracy</p>
+              </div>
+              <div class="value-strip__card value-strip__card--visual">
+                <img src="assets/images/value-strip/trust.webp" alt="Professional smiling while shaking hands with a client" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section section--light about">
+      <div class="container-custom">
+        <div class="row g-5 align-items-center">
+          <div class="col-md-5">
+            <div class="about__media">
+              <img
+                src="assets/images/about-visual.webp"
+                alt="Hasten Business Solutions team reviewing financial documents"
+                loading="lazy"
+                width="900"
+                height="1125">
+              <div class="about__badge about__badge--top">
+                <span class="about__badge-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
+                <span class="about__badge-text">Compliance Focused</span>
+              </div>
+              <div class="about__badge about__badge--bottom">
+                <span class="about__badge-icon"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i></span>
+                <span class="about__badge-text">Growth Driven</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <p class="pill-badge">About Hasten</p>
+            <h2>Your Business. Our Expertise.</h2>
+            <p class="section-subtitle">
+              <strong>We handle the details, so you can focus on growth.</strong>
+              Hasten Business Solutions LLP works alongside businesses to manage the
+              accounting, compliance and operational details that keep a company
+              running smoothly. We act as an extension of your team, so you can spend
+              less time on paperwork and more time on the work that grows your business.
+            </p>
+            <div class="row row-cols-1 row-cols-sm-2 g-3 about__features">
+              <div class="col">
+                <div class="about__feature">
+                  <div class="icon-badge"><i class="bi bi-award" aria-hidden="true"></i></div>
+                  <span>Professional Expertise</span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="about__feature">
+                  <div class="icon-badge"><i class="bi bi-headset" aria-hidden="true"></i></div>
+                  <span>Reliable Support</span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="about__feature">
+                  <div class="icon-badge"><i class="bi bi-puzzle" aria-hidden="true"></i></div>
+                  <span>Integrated Solutions</span>
+                </div>
+              </div>
+              <div class="col">
+                <div class="about__feature">
+                  <div class="icon-badge"><i class="bi bi-bullseye" aria-hidden="true"></i></div>
+                  <span>Business-Focused Approach</span>
+                </div>
+              </div>
+            </div>
+            <a href="about.html" class="btn btn-outline-dark"><span class="btn__label">Know More About Hasten</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 9: service detail modals are wired up in the next phase -->
+    <section id="services" class="section services">
+      <div class="container-custom">
+        <p class="pill-badge">Our Services</p>
+        <h2>Comprehensive Business Solutions</h2>
+        <p class="section-subtitle">
+          <strong>We bring every service your business needs under one roof.</strong>
+          From financial management and compliance to digital growth, our services
+          are designed to support your business at every stage.
+        </p>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center services__grid">
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/virtual-accounting.webp" alt="Accountant reviewing financial documents and using a calculator" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-calculator" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Virtual Accounting</h3>
+                  <span class="service-card__number">01</span>
+                </div>
+                <p>Professional virtual accounting support that helps businesses maintain accurate, organized and efficient financial records.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-virtual-accounting">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/virtual-operations.webp" alt="Business team collaborating at their desks in a modern office" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-diagram-3" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Virtual Operations &amp; Back Office</h3>
+                  <span class="service-card__number">02</span>
+                </div>
+                <p>Reliable virtual operational and back-office support to streamline everyday business processes and improve efficiency.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-virtual-operations">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/taxation-planning.webp" alt="Professional reviewing tax and planning documents at a desk" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-receipt" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Taxation &amp; Planning</h3>
+                  <span class="service-card__number">03</span>
+                </div>
+                <p>Strategic taxation support and planning to help businesses manage tax obligations efficiently and make informed financial decisions.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-taxation-planning">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/gst-services.webp" alt="Financial documents and a calculator on a desk" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-percent" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>GST Services</h3>
+                  <span class="service-card__number">04</span>
+                </div>
+                <p>End-to-end GST support including registrations, compliance, returns and related business requirements.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-gst-services">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/corporate-compliance.webp" alt="Business professional handing over a signed document" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-file-earmark-check" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Corporate Compliance &amp; Registrations</h3>
+                  <span class="service-card__number">05</span>
+                </div>
+                <p>Professional assistance with business registrations, corporate compliance and essential regulatory requirements.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-corporate-compliance">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/auditing.webp" alt="Magnifying glass reviewing printed financial charts" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-clipboard-check" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Auditing</h3>
+                  <span class="service-card__number">06</span>
+                </div>
+                <p>Internal audit services designed to strengthen processes, identify risks and improve operational controls.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-auditing">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/financial-reporting.webp" alt="Magnifying glass reviewing a page of financial reporting charts" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Financial Reporting</h3>
+                  <span class="service-card__number">07</span>
+                </div>
+                <p>Clear and structured financial reporting that helps businesses understand performance and make better decisions.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-financial-reporting">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card-surface card-surface--interactive service-card">
+              <div class="service-card__media">
+                <img src="assets/images/services/trademark.webp" alt="Professional signing a registration document" loading="lazy" width="1000" height="625">
+              </div>
+              <div class="service-card__icon-float"><i class="bi bi-shield-lock" aria-hidden="true"></i></div>
+              <div class="service-card__body">
+                <div class="service-card__title-row">
+                  <h3>Trademark &amp; Intellectual Property</h3>
+                  <span class="service-card__number">08</span>
+                </div>
+                <p>Professional support for trademark-related requirements and intellectual property protection.</p>
+                <button type="button" class="link-arrow" data-bs-toggle="modal" data-bs-target="#serviceModal-trademark">Learn More <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 9: Service detail modals -->
+      <div class="modal fade service-modal" id="serviceModal-virtual-accounting" tabindex="-1" aria-labelledby="serviceModal-virtual-accounting-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/virtual-accounting.webp" alt="Accountant reviewing financial documents and using a calculator" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">01</span>
+                  <h3 id="serviceModal-virtual-accounting-label">Virtual Accounting</h3>
+                  <p>Our virtual accounting service gives your business a dedicated, remote accounting function without the overhead of an in-house team. We manage day-to-day bookkeeping, reconcile accounts and keep your financial records accurate and organized.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Day-to-day bookkeeping and ledger maintenance</li>
+                  <li>Bank and account reconciliation</li>
+                  <li>Accounts payable and receivable management</li>
+                  <li>Monthly financial record reviews</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-virtual-operations" tabindex="-1" aria-labelledby="serviceModal-virtual-operations-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/virtual-operations.webp" alt="Business team collaborating at their desks in a modern office" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">02</span>
+                  <h3 id="serviceModal-virtual-operations-label">Virtual Operations &amp; Back Office</h3>
+                  <p>We take on the operational and administrative work that keeps a business running behind the scenes, so your team can stay focused on core priorities.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Data entry and documentation management</li>
+                  <li>Vendor and invoice coordination</li>
+                  <li>Scheduling and administrative support</li>
+                  <li>Process documentation and workflow support</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-taxation-planning" tabindex="-1" aria-labelledby="serviceModal-taxation-planning-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/taxation-planning.webp" alt="Professional reviewing tax and planning documents at a desk" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">03</span>
+                  <h3 id="serviceModal-taxation-planning-label">Taxation &amp; Planning</h3>
+                  <p>Our team helps businesses plan for tax obligations in advance rather than react to them, with guidance built around your specific structure and activity.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Income tax planning and advisory</li>
+                  <li>Tax filing preparation and support</li>
+                  <li>Assessment of applicable tax obligations</li>
+                  <li>Ongoing tax compliance guidance</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-gst-services" tabindex="-1" aria-labelledby="serviceModal-gst-services-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/gst-services.webp" alt="Financial documents and a calculator on a desk" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">04</span>
+                  <h3 id="serviceModal-gst-services-label">GST Services</h3>
+                  <p>From registration to returns, we manage the GST-related requirements that businesses are expected to stay on top of every filing cycle.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>GST registration</li>
+                  <li>Monthly and annual GST return filing</li>
+                  <li>GST reconciliation</li>
+                  <li>Support with GST-related queries and notices</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-corporate-compliance" tabindex="-1" aria-labelledby="serviceModal-corporate-compliance-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/corporate-compliance.webp" alt="Business professional handing over a signed document" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">05</span>
+                  <h3 id="serviceModal-corporate-compliance-label">Corporate Compliance &amp; Registrations</h3>
+                  <p>We help businesses meet the registration and compliance obligations required to operate legally and stay in good standing.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Company and LLP registration support</li>
+                  <li>Statutory compliance filings</li>
+                  <li>Documentation for regulatory requirements</li>
+                  <li>Ongoing compliance tracking</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-auditing" tabindex="-1" aria-labelledby="serviceModal-auditing-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/auditing.webp" alt="Magnifying glass reviewing printed financial charts" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">06</span>
+                  <h3 id="serviceModal-auditing-label">Auditing</h3>
+                  <p>Our internal audit process reviews financial and operational processes to help identify gaps early, before they become larger issues.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Internal financial audits</li>
+                  <li>Process and control reviews</li>
+                  <li>Risk identification and reporting</li>
+                  <li>Recommendations for operational improvement</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-financial-reporting" tabindex="-1" aria-labelledby="serviceModal-financial-reporting-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/financial-reporting.webp" alt="Magnifying glass reviewing a page of financial reporting charts" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">07</span>
+                  <h3 id="serviceModal-financial-reporting-label">Financial Reporting</h3>
+                  <p>We prepare financial reports that give business owners a clear, accurate picture of performance, structured in a way that supports decision-making.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Monthly and periodic financial statements</li>
+                  <li>Profit and loss reporting</li>
+                  <li>Cash flow summaries</li>
+                  <li>Custom reports for management review</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade service-modal" id="serviceModal-trademark" tabindex="-1" aria-labelledby="serviceModal-trademark-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <button type="button" class="btn-close service-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row g-0">
+              <div class="col-md-5 service-modal__media">
+                <img src="assets/images/services/trademark.webp" alt="Professional signing a registration document" loading="lazy">
+              </div>
+              <div class="col-md-7">
+                <div class="modal-body service-modal__body">
+                  <span class="service-modal__number">08</span>
+                  <h3 id="serviceModal-trademark-label">Trademark &amp; Intellectual Property</h3>
+                  <p>We assist businesses in protecting their brand identity through trademark registration and related intellectual property support.</p>
+                  <h4 class="service-modal__subheading">What We Can Help With</h4>
+                  <ul class="service-modal__list">
+                  <li>Trademark search and registration</li>
+                  <li>IP documentation support</li>
+                  <li>Renewal and compliance tracking</li>
+                  <li>Guidance on protecting brand assets</li>
+                  </ul>
+                  <button type="button" class="btn btn-primary service-modal__enquire"><span class="btn__label">Enquire About This Service</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Phase 10: Why Choose Hasten goes here -->
+    <section id="why-us" class="section section--dark why-us">
+      <div class="container-custom">
+        <h2>Why Businesses Choose Hasten</h2>
+        <div class="row g-4 g-lg-5">
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">01</span>
+              <h3>Integrated Business Support</h3>
+              <p>Multiple business functions under one trusted partner.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">02</span>
+              <h3>Professional Approach</h3>
+              <p>Structured processes and business-focused service.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">03</span>
+              <h3>Reliable &amp; Responsive</h3>
+              <p>Support designed around business requirements.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">04</span>
+              <h3>Compliance Focused</h3>
+              <p>Helping businesses stay organized and compliant.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">05</span>
+              <h3>Growth Mindset</h3>
+              <p>Solutions designed for today's needs and tomorrow's growth.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="why-us__item">
+              <span class="index-marker">06</span>
+              <h3>Technology Enabled</h3>
+              <p>Modern tools and digital processes for efficient service delivery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 12: Testimonials go here -->
+    <section id="testimonials" class="section section--light testimonials">
+      <div class="container-custom">
+        <p class="pill-badge">Testimonials</p>
+        <h2>What Our Clients Say</h2>
+        <p class="section-subtitle">
+          <strong>Feedback from the businesses we work with.</strong>
+          Real experiences, shared in their own words.
+        </p>
+        <div id="testimonialsCarousel" class="carousel slide testimonials__carousel">
+          <div class="carousel-inner" id="testimonialsInner"></div>
+        </div>
+        <div class="testimonials__controls">
+          <button type="button" class="testimonials__nav-btn" data-bs-target="#testimonialsCarousel" data-bs-slide="prev" aria-label="Previous testimonials">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          </button>
+          <div class="carousel-indicators testimonials__indicators" id="testimonialsIndicators"></div>
+          <button type="button" class="testimonials__nav-btn" data-bs-target="#testimonialsCarousel" data-bs-slide="next" aria-label="Next testimonials">
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark cta">
+      <img src="assets/images/cta/team-meeting.webp" alt="" class="cta__bg" loading="lazy" aria-hidden="true">
+      <div class="cta__overlay" aria-hidden="true"></div>
+      <div class="cta__glow" aria-hidden="true"></div>
+      <div class="container-custom cta__content">
+        <h2>Let's Build a Stronger Business Together.</h2>
+        <p class="section-subtitle">
+          Whether you need accounting support, tax assistance, compliance
+          services or digital growth solutions, Hasten is ready to help.
+        </p>
+        <div class="cta__actions">
+          <a href="#contact" class="btn btn-primary"><span class="btn__label">Talk to Our Team</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+          <a href="#services" class="btn btn-outline-light"><span class="btn__label">Explore Services</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 15: Google Map goes here, inside the left column below the
+         contact details -->
+    <section id="contact" class="section section--light contact">
+      <div class="container-custom">
+        <p class="pill-badge">Contact</p>
+        <h2>Let's Talk About Your Business</h2>
+        <p class="section-subtitle">
+          Have a question or need professional business support? Get in touch
+          with our team.
+        </p>
+
+        <div class="row g-5 contact__row">
+          <div class="col-lg-5">
+            <div class="contact-info">
+              <div class="contact-info__item">
+                <div class="icon-badge"><i class="bi bi-geo-alt" aria-hidden="true"></i></div>
+                <div>
+                  <p class="contact-info__label">Address:</p>
+                  <p class="contact-info__value">
+                    KM SQUARE PALACHUVAD,<br>
+                    27/1901, Ambadimoola Rd,<br>
+                    Thrikkakara, Vazhakkala,<br>
+                    Kochi, Kakkanad,<br>
+                    Kerala 682030
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-info__item">
+                <div class="icon-badge"><i class="bi bi-telephone" aria-hidden="true"></i></div>
+                <div>
+                  <p class="contact-info__label">Phone:</p>
+                  <a class="contact-info__value" href="tel:+918078802553">080788 02553</a>
+                </div>
+              </div>
+
+              <div class="contact-info__item">
+                <div class="icon-badge"><i class="bi bi-whatsapp" aria-hidden="true"></i></div>
+                <div>
+                  <p class="contact-info__label">WhatsApp:</p>
+                  <a class="contact-info__value" href="https://wa.me/918078802553" target="_blank" rel="noopener noreferrer">080788 02553</a>
+                </div>
+              </div>
+
+              <div class="contact-info__item">
+                <div class="icon-badge"><i class="bi bi-envelope" aria-hidden="true"></i></div>
+                <div>
+                  <p class="contact-info__label">Email:</p>
+                  <a class="contact-info__value" href="mailto:hastenbs@gmail.com">hastenbs@gmail.com</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="contact-form-panel">
+            <form id="contactForm" class="contact-form" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="fullName">Full Name <span class="text-danger" aria-hidden="true">*</span></label>
+                  <input type="text" class="form-control" id="fullName" name="fullName" required>
+                  <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="email">Email Address <span class="text-danger" aria-hidden="true">*</span></label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="phone">Phone Number</label>
+                  <input type="tel" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="companyName">Company Name</label>
+                  <input type="text" class="form-control" id="companyName" name="companyName">
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="message">Message <span class="text-danger" aria-hidden="true">*</span></label>
+                  <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                  <div class="invalid-feedback">Please enter a message.</div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary"><span class="btn__label">Send Enquiry</span><span class="btn__icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></button>
+                </div>
+              </div>
+            </form>
+
+            <div class="contact-form__success" hidden tabindex="-1">
+              <div class="icon-badge contact-form__success-icon"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
+              <h3>Thanks for reaching out.</h3>
+              <p>Your enquiry has been received. Our team will get back to you shortly.</p>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container-custom">
+      <div class="row g-4 site-footer__top">
+        <div class="col-12 col-lg-4">
+          <a href="#home" class="site-footer__brand">
+            <img src="assets/images/hasten_logo.png" alt="Hasten Business Solutions LLP" class="site-footer__logo" loading="lazy">
+          </a>
+          <p class="site-footer__blurb">
+            Professional business solutions designed to simplify, strengthen
+            and support your business.
+          </p>
+          <div class="site-footer__social">
+            <a href="https://www.facebook.com/hastenbs/" target="_blank" rel="noopener noreferrer" class="site-footer__social-link" aria-label="Hasten Business Solutions on Facebook">
+              <i class="bi bi-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.instagram.com/hastenbs/" target="_blank" rel="noopener noreferrer" class="site-footer__social-link" aria-label="Hasten Business Solutions on Instagram">
+              <i class="bi bi-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="https://in.linkedin.com/company/hastenbiz" target="_blank" rel="noopener noreferrer" class="site-footer__social-link" aria-label="Hasten Business Solutions on LinkedIn">
+              <i class="bi bi-linkedin" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="site-footer__heading">Company</h3>
+          <ul class="site-footer__links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <h3 class="site-footer__heading">Services</h3>
+          <ul class="site-footer__links">
+            <li><a href="#services">Virtual Accounting</a></li>
+            <li><a href="#services">Taxation &amp; Planning</a></li>
+            <li><a href="#services">GST Services</a></li>
+            <li><a href="#services">Auditing</a></li>
+            <li><a href="#services">Financial Reporting</a></li>
+            <li><a href="#services">Trademark &amp; Intellectual Property</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <h3 class="site-footer__heading">Contact</h3>
+          <ul class="site-footer__links">
+            <li>KM SQUARE PALACHUVAD, 27/1901, Ambadimoola Rd, Thrikkakara, Vazhakkala, Kochi, Kakkanad, Kerala 682030</li>
+            <li><a href="tel:+918078802553">080788 02553</a></li>
+            <li><a href="https://wa.me/918078802553" target="_blank" rel="noopener noreferrer">WhatsApp: 080788 02553</a></li>
+            <li><a href="mailto:hastenbs@gmail.com">hastenbs@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <p class="site-footer__copyright">
+          &copy; <span id="copyrightYear"></span> Hasten Business Solutions LLP. All Rights Reserved.
+        </p>
+        <p class="site-footer__credit">
+          Designed &amp; Developed by
+          <a href="https://www.tinqbit.com/" target="_blank" rel="noopener noreferrer">Tinqbit Pvt Ltd</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <!-- Site script -->
+  <script src="js/script.js"></script>
+</body>
+</html>
