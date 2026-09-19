@@ -119,6 +119,16 @@
 </head>
 <body>
 
+  <!-- Hidden by default if JS is blocked/fails — script.js is the only
+       thing that ever removes it, so it must never be visible without
+       a guarantee something will hide it again. -->
+  <div id="preloader" class="preloader" aria-hidden="true">
+    <img src="assets/images/hasten_logo.png" alt="" class="preloader__logo">
+  </div>
+  <noscript>
+    <style>#preloader { display: none !important; }</style>
+  </noscript>
+
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <header>

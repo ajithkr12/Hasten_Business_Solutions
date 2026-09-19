@@ -516,6 +516,29 @@ marked, easily editable placeholders where real data is not provided.
 > every card, which sidesteps the grid auto-sizing entirely — same
 > value regardless of row or column. Verified: all 6 cards measure
 > exactly 220px at 375/600/992px+, 0 axe violations, zero overflow.
+>
+> **Follow-up: mobile row pattern.** User asked for 2 cards per row on
+> mobile (previously 1 column below 576px) with a specific alternating
+> pattern: row 1 text/image, row 2 image/text, row 3 text/image. Changed
+> the base grid to `repeat(2, 1fr)` (removing the separate 1-column
+> mobile stack — the 576px breakpoint became redundant and was folded
+> into the base style). Plain DOM order alone gives text/image three
+> times over (odd cards are always stats, even ones always photos), so
+> row 2's pair needed reordering.
+>
+> First attempt used `order` on only cards 3 and 4, which produced the
+> wrong result — cards 5 and 6 kept their default `order: 0`, and since
+> `order` sorts globally across all items (not just between
+> neighbors), the two reordered cards landed after cards 5/6 entirely
+> instead of swapping locally. Caught this by actually screenshotting
+> the result rather than trusting the CSS logic, and fixed it by giving
+> every one of the 6 cards an explicit order value spanning the whole
+> set, not just the two being swapped. Scoped to `max-width: 991.98px`
+> so the 3-column desktop layout (which already gets the right
+> checkerboard from DOM order alone) is untouched. Verified: correct
+> text/image/image-text/text-image pattern at 375px and 768px, unchanged
+> 3-column layout at 1440px, 0 axe violations, zero overflow at
+> 320–1920px.
 
 ---
 
@@ -1727,6 +1750,56 @@ The homepage's own "Know More About Hasten" button now links to
 > section — same fix already applied to the Value Strip's label cards
 > for the identical reason. Re-verified: 0 axe violations, 0 new
 > incomplete items, zero overflow at 320–1440px.
+
+---
+
+## PHASE 25 — Preloader ✅ COMPLETE
+
+Not part of the original phase plan; added at the client's request.
+
+**Task 26.1** — Full-screen loading overlay, shown from first paint and
+hidden once the page has fully loaded (the `window.load` event, not
+`DOMContentLoaded` — waits for images/video, not just the HTML/CSS/JS).
+A pulsing logo, not a generic spinner, so it stays on-brand. Added
+identically to all three pages (`index.html`, `about.html`,
+`contact.html`).
+
+**Task 26.2 — Safety nets**, since a stuck full-screen overlay would be
+far worse than no preloader at all:
+- `<noscript>` in each page's `<head>`-adjacent markup force-hides it
+  with `display: none !important` if JavaScript is blocked or fails —
+  the overlay is never visible unless something is guaranteed to remove
+  it again.
+- `initPreloader()` checks `document.readyState === "complete"` before
+  attaching a `load` listener, in case the page already finished loading
+  by the time the script runs (a `load` event that already fired would
+  otherwise never be caught).
+- A `setTimeout` safety net hides it unconditionally after 4 seconds
+  regardless of whether `load` ever fires, so a stalled request or
+  unusual browser quirk can't leave the whole page hidden indefinitely.
+- `prefers-reduced-motion: reduce` disables the pulse animation (the
+  site's existing global reduced-motion override also collapses the
+  fade-out transition to near-instant, with no extra code needed).
+
+**Verified, not assumed:**
+- Confirmed the overlay is actually visible *during* loading (not just
+  present in markup) by artificially delaying the hero video request
+  and checking `#preloader`'s class right after `DOMContentLoaded` —
+  still visible — then confirming it's hidden once `load` fires
+  afterward.
+- `javaScriptEnabled: false` on all three pages: preloader computes to
+  `display: none` immediately, confirming the `<noscript>` fallback
+  actually works rather than assuming the markup is correct.
+- Reduced-motion context: `animation-name` on the logo computes to
+  `none`.
+- 0 axe violations and 0 console errors on all three pages after load.
+
+**Acceptance criteria:**
+- [x] Preloader displays on initial page load across all three pages.
+- [x] Hides automatically once the page has fully loaded.
+- [x] Never gets stuck visible if JS is blocked, fails, or `load` never fires.
+- [x] Respects `prefers-reduced-motion`.
+- [x] 0 axe violations, 0 console errors.
 
 ---
 

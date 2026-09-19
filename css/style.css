@@ -117,6 +117,53 @@ a:hover {
   box-shadow: none;
 }
 
+/* Full-screen loading overlay, shown until script.js's 'load' handler
+   hides it (see initPreloader). The pulsing logo is purely decorative —
+   the div itself is aria-hidden, and the <noscript> in each page's HTML
+   force-hides this if JS never runs, so a failed/blocked script can
+   never leave a visitor staring at a stuck overlay. */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.preloader__logo {
+  height: 56px;
+  width: auto;
+  animation: preloader-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes preloader-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.94);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.preloader--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader__logo {
+    animation: none;
+  }
+}
+
 /* Lets keyboard users jump past the repeated nav block straight to page
    content. Off-screen until it receives focus, then appears above the
    fixed navbar. */
@@ -658,13 +705,42 @@ h4 {
    middle cell of each row (visual / label) reads as the featured one. */
 .value-strip__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-@media (min-width: 576px) {
-  .value-strip__grid {
-    grid-template-columns: repeat(2, 1fr);
+/* At 2 columns, plain DOM order gives text/image, text/image, text/image
+   (odd cards are always stats, even ones always photos) — swap row 2's
+   pair so the three rows alternate text-image / image-text / text-image
+   instead of repeating the same pattern three times. Only applies below
+   the 3-column desktop breakpoint, where the asymmetric grid already
+   places cards correctly via DOM order alone. */
+@media (max-width: 991.98px) {
+  /* Every item needs an explicit order — leaving cards 5/6 at their
+     default (0) would push the reordered 3/4 pair after them instead
+     of just swapping locally, since `order` sorts globally. */
+  .value-strip__grid > :nth-child(1) {
+    order: 1;
+  }
+
+  .value-strip__grid > :nth-child(2) {
+    order: 2;
+  }
+
+  .value-strip__grid > :nth-child(3) {
+    order: 4;
+  }
+
+  .value-strip__grid > :nth-child(4) {
+    order: 3;
+  }
+
+  .value-strip__grid > :nth-child(5) {
+    order: 5;
+  }
+
+  .value-strip__grid > :nth-child(6) {
+    order: 6;
   }
 }
 

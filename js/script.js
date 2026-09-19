@@ -8,9 +8,12 @@
   Phase 16: footer dynamic copyright year.
   Phase 20: scroll-reveal animations (hero load, service cards, about
   image, CTA section) and reduced-motion handling.
+  Preloader: full-screen loading overlay, hidden once the page finishes
+  loading.
 */
 
 document.addEventListener("DOMContentLoaded", function () {
+  initPreloader();
   initNavScrollState();
   initNavMobileAutoClose();
   initNavScrollSpy();
@@ -345,4 +348,28 @@ function initScrollReveal() {
     el.classList.add("reveal");
     observer.observe(el);
   });
+}
+
+function initPreloader() {
+  var preloader = document.getElementById("preloader");
+  if (!preloader) return;
+
+  function hide() {
+    preloader.classList.add("preloader--hidden");
+  }
+
+  // If everything has already finished loading by the time this runs,
+  // "load" has already fired and would never call hide() — check
+  // readyState directly instead of assuming the event is still coming.
+  if (document.readyState === "complete") {
+    hide();
+    return;
+  }
+
+  window.addEventListener("load", hide);
+
+  // Safety net: hide it regardless after a few seconds, so a "load"
+  // event that never fires (a stalled request, an unusual browser
+  // quirk) can't leave the whole page hidden behind the overlay.
+  setTimeout(hide, 4000);
 }
