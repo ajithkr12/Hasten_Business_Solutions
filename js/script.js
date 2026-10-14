@@ -2,7 +2,8 @@
   Hasten Business Solutions LLP — script.js
   Phase 4: navbar scroll state, mobile menu auto-close, scroll-spy active link.
   Phase 5: hero video play/pause + mute/unmute controls.
-  Phase 9: service detail modal "Enquire" flow.
+  Services mega menu: hover/keyboard open, category tabs, responsive
+  sub-group disclosure.
   Phase 12: testimonials carousel (responsive item grouping).
   Phase 14: contact form validation + success state.
   Phase 16: footer dynamic copyright year.
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initNavMobileAutoClose();
   initNavScrollSpy();
   initHeroVideoControls();
-  initServiceModalEnquire();
+  initServicesMenu();
   initTestimonialsCarousel();
   initContactForm();
   initFooterYear();
@@ -43,7 +44,9 @@ function initNavMobileAutoClose() {
   var collapseEl = document.getElementById("siteNavCollapse");
   if (!collapseEl) return;
 
-  var links = collapseEl.querySelectorAll("[data-nav-link]");
+  // The Services toggle opens the mega menu inside the panel, so it must
+  // not close the panel like an ordinary link does.
+  var links = collapseEl.querySelectorAll("[data-nav-link]:not(.dropdown-toggle)");
   links.forEach(function (link) {
     link.addEventListener("click", function () {
       if (collapseEl.classList.contains("show") && window.bootstrap) {
@@ -143,30 +146,92 @@ function initHeroVideoControls() {
   syncMuteState();
 }
 
-function initServiceModalEnquire() {
-  document.addEventListener("click", function (event) {
-    var button = event.target.closest(".service-modal__enquire");
-    if (!button) return;
+function initServicesMenu() {
+  var items = document.querySelectorAll(".site-nav__mega");
+  var nav = document.getElementById("siteNav");
+  if (!items.length || !nav || !window.bootstrap) return;
 
-    var modalEl = button.closest(".modal");
-    if (!modalEl || !window.bootstrap) return;
+  var desktop = window.matchMedia("(min-width: 1200px)");
+  var groups = document.querySelectorAll(".mega-menu__group");
 
-    // Order matters: close the modal first, then scroll once it has
-    // actually finished closing (avoids fighting the modal's own
-    // focus/scroll handling mid-transition).
-    modalEl.addEventListener(
-      "hidden.bs.modal",
-      function onHidden() {
-        var contact = document.getElementById("contact");
-        if (contact) {
-          contact.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+  // Each sub-group's service list is an always-open panel on desktop and a
+  // collapsed accordion row on mobile.
+  function syncGroups() {
+    groups.forEach(function (group) {
+      group.open = desktop.matches;
+    });
+  }
+  syncGroups();
+  desktop.addEventListener("change", syncGroups);
+
+  function dropdownFor(item) {
+    return window.bootstrap.Dropdown.getOrCreateInstance(item.querySelector(".dropdown-toggle"));
+  }
+
+  // Keep the transparent-over-hero navbar solid while any panel is open,
+  // so navbar and panel read as one surface.
+  function syncNavState() {
+    nav.classList.toggle("has-open-menu", !!nav.querySelector(".mega-menu.show"));
+  }
+
+  items.forEach(function (item) {
+    var toggle = item.querySelector(".dropdown-toggle");
+    var dropdown = dropdownFor(item);
+    var hideTimer;
+
+    item.addEventListener("click", function (event) {
+      if (desktop.matches && event.target.closest(".mega-menu__group > summary")) {
+        event.preventDefault();
+      }
+    });
+
+    // On desktop the hover already opened the panel, so a click on the
+    // toggle should keep it open rather than toggle it shut. Stopping the
+    // event here (capture phase) keeps it from reaching Bootstrap's
+    // document-level toggle handler.
+    toggle.addEventListener(
+      "click",
+      function (event) {
+        if (!desktop.matches) return;
+        event.preventDefault();
+        event.stopPropagation();
+        dropdown.show();
       },
-      { once: true }
+      true
     );
 
-    var instance = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-    instance.hide();
+    // Desktop: open on hover as well as click, with a short grace period so
+    // moving the pointer from the link down into the panel doesn't close it.
+    item.addEventListener("mouseenter", function () {
+      if (!desktop.matches) return;
+      clearTimeout(hideTimer);
+      // Moving straight to a neighbouring category closes the previous
+      // panel at once instead of letting the two overlap.
+      items.forEach(function (other) {
+        if (other !== item) dropdownFor(other).hide();
+      });
+      // Bootstrap focuses the toggle on show(); for a pointer hover that
+      // would paint a keyboard focus ring, so hand focus back.
+      var hadFocus = document.activeElement === toggle;
+      dropdown.show();
+      if (!hadFocus) toggle.blur();
+    });
+    item.addEventListener("mouseleave", function () {
+      if (!desktop.matches) return;
+      hideTimer = setTimeout(function () {
+        dropdown.hide();
+      }, 200);
+    });
+
+    // Hovering a sub-group on the left shows its services, like a click.
+    item.querySelectorAll(".mega-menu__tab").forEach(function (tab) {
+      tab.addEventListener("mouseenter", function () {
+        if (desktop.matches) window.bootstrap.Tab.getOrCreateInstance(tab).show();
+      });
+    });
+
+    toggle.addEventListener("shown.bs.dropdown", syncNavState);
+    toggle.addEventListener("hidden.bs.dropdown", syncNavState);
   });
 }
 
@@ -324,13 +389,13 @@ function initScrollReveal() {
     });
   }
 
-  // Scroll-triggered: service cards, the about image, and the CTA content.
+  // Scroll-triggered: the about image and the CTA content.
   // The .reveal (hidden) class is only ever added here, immediately before
   // observing — so if this function doesn't run at all, nothing starts
   // hidden.
   if (!("IntersectionObserver" in window)) return;
 
-  var targets = document.querySelectorAll(".service-card, .about__media, .cta__content");
+  var targets = document.querySelectorAll(".about__media, .cta__content");
   if (!targets.length) return;
 
   var observer = new IntersectionObserver(

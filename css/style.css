@@ -906,188 +906,343 @@ h4 {
 }
 
 /* ---------------------------------------------------------------------- */
-/* Services                                                               */
+/* Services directory (homepage)                                          */
 /* ---------------------------------------------------------------------- */
 
 .services .section-subtitle {
+  margin-bottom: 2.5rem;
+}
+
+/* Category switcher: a segmented control rather than Bootstrap's default
+   tab underline, so the three categories read as one choice. */
+.services-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0.375rem;
+  background: var(--color-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.5rem;
+}
+
+.services-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.services-tabs__tab:hover {
+  color: var(--color-cyan-text);
+}
+
+.services-tabs__tab.active {
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.services-tabs__count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-tint);
+  color: var(--color-cyan-text);
+}
+
+.services-tabs__tab.active .services-tabs__count {
+  background: rgba(8, 180, 209, 0.22);
+  color: var(--color-white);
+}
+
+.services-tabs__blurb {
+  color: var(--color-gray);
+  margin-bottom: 1.75rem;
+}
+
+.svc-group {
+  height: 100%;
+  padding: 1.75rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.svc-group__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.svc-group__head h3 {
+  margin: 0;
+}
+
+.svc-group__count {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-gray);
+}
+
+.svc-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.svc-group__list li + li,
+.svc-group__more .svc-group__list li {
+  border-top: 1px solid var(--color-border);
+}
+
+.svc-group__list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  font-size: 0.9375rem;
+  color: var(--color-dark);
+  text-decoration: none;
+}
+
+.svc-group__list a::after {
+  content: "\f138"; /* bi-arrow-right */
+  font-family: "bootstrap-icons";
+  color: var(--color-cyan-text);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.svc-group__list a:hover,
+.svc-group__list a:focus-visible {
+  color: var(--color-cyan-text);
+}
+
+.svc-group__list a:hover::after,
+.svc-group__list a:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+/* "Show N more": the summary sits under the first six links; opening it
+   reveals the rest beneath. Flex + order keeps the toggle at the bottom. */
+.svc-group__more {
+  display: flex;
+  flex-direction: column;
+}
+
+.svc-group__more > summary {
+  order: 2;
+  list-style: none;
+  cursor: pointer;
+  margin-top: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-cyan-text);
+}
+
+.svc-group__more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.svc-group__more-close,
+.svc-group__more[open] .svc-group__more-open {
+  display: none;
+}
+
+.svc-group__more[open] .svc-group__more-close {
+  display: inline;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Service pages (services/*.html)                                        */
+/* ---------------------------------------------------------------------- */
+
+.service-hero h1 {
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+}
+
+.service-hero__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  font-size: 0.875rem;
+  color: rgba(245, 250, 252, 0.7);
+}
+
+.service-hero__crumbs li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+  color: rgba(245, 250, 252, 0.4);
+}
+
+.service-hero__crumbs a {
+  color: rgba(245, 250, 252, 0.85);
+  text-decoration: none;
+}
+
+.service-hero__crumbs a:hover {
+  color: var(--color-cyan);
+}
+
+.service-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.service-hero__media {
+  position: relative;
+}
+
+.service-hero__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.service-hero__badge {
+  position: absolute;
+  left: -1.25rem;
+  bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  background: var(--color-white);
+  color: var(--color-dark);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+
+.service-hero__badge .icon-badge {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+}
+
+.service-detail h2 {
+  margin-bottom: 1.25rem;
+}
+
+.service-detail__subheading {
+  margin: 2.25rem 0 1rem;
+}
+
+.service-detail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.service-detail__list li {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.service-detail__list li::before {
+  content: "\f26a"; /* bi-check-circle-fill */
+  font-family: "bootstrap-icons";
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  color: var(--color-cyan);
+}
+
+/* Form stays in view beside the longer overview column on desktop. */
+@media (min-width: 992px) {
+  .service-detail__form {
+    position: sticky;
+    top: calc(var(--nav-height) - 1rem);
+  }
+}
+
+.service-detail__form {
+  padding: 2rem;
+  scroll-margin-top: var(--nav-height);
+}
+
+.service-detail__form-title {
+  font-size: 1.375rem;
+  margin-bottom: 0.35rem;
+}
+
+.service-detail__form-lede {
+  color: var(--color-gray);
+  font-size: 0.9375rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-process h2 {
   margin-bottom: 3rem;
 }
 
-.service-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.service-card__media {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-}
-
-.service-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--transition-base);
-}
-
-.service-card:hover .service-card__media img {
-  transform: scale(1.05);
-}
-
-/* Floats as a "sticker" straddling the photo/body seam, connecting the two
-   instead of stacking icon-then-text flatly. White fill keeps it legible
-   over any photo. */
-.service-card__icon-float {
-  position: relative;
-  z-index: 2;
-  width: 56px;
-  height: 56px;
-  margin: -28px 0 0 1.75rem;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-raised);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-cyan);
-  font-size: 1.35rem;
-  flex-shrink: 0;
-}
-
-.service-card__body {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 1rem 1.75rem 1.75rem;
-}
-
-.service-card__title-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.65rem;
-}
-
-.service-card__title-row h3 {
+.service-process__steps {
+  list-style: none;
+  padding: 0;
   margin-bottom: 0;
 }
 
-/* Same outlined-numeral device as the index-marker (Process/Why Us), scaled
-   down for card context rather than sharing the class outright. */
-.service-card__number {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  line-height: 1.3;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--color-cyan-text);
-  flex-shrink: 0;
-  margin-top: 0.1rem;
+.service-related h2 {
+  margin-bottom: 2rem;
 }
 
-.service-card__body p {
-  color: var(--color-gray);
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-.service-card:hover .link-arrow i {
-  transform: translateX(4px);
-}
-
-/* ---------------------------------------------------------------------- */
-/* Service detail modal                                                   */
-/* ---------------------------------------------------------------------- */
-
-.service-modal .modal-content {
-  border: none;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.service-modal__close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 5;
-  width: 36px;
-  height: 36px;
-  background-color: var(--color-white);
-  border-radius: var(--radius-pill);
-  opacity: 1;
-}
-
-.service-modal__media {
-  position: relative;
-  min-height: 260px;
-}
-
-.service-modal__media img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.service-modal__body {
-  padding: 2.5rem;
-}
-
-.service-modal__number {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-cyan);
-  margin-bottom: 0.85rem;
-}
-
-.service-modal__body h3 {
-  margin-bottom: 0.85rem;
-}
-
-.service-modal__body > p {
-  color: var(--color-gray);
-}
-
-.service-modal__subheading {
-  font-size: 1rem;
-  margin: 1.5rem 0 0.85rem;
-}
-
-.service-modal__list {
+.service-related__list {
   list-style: none;
-  margin: 0 0 2rem;
+  margin: 0;
   padding: 0;
-  display: grid;
-  gap: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
-.service-modal__list li {
-  position: relative;
-  padding-left: 1.1rem;
-  font-size: 0.95rem;
-  color: var(--color-gray);
-}
-
-.service-modal__list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.55rem;
-  width: 6px;
-  height: 6px;
+.service-related__list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
-  background: var(--color-cyan);
+  color: var(--color-dark);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.service-related__list a i {
+  color: var(--color-cyan-text);
+  transition: transform var(--transition-fast);
+}
+
+.service-related__list a:hover {
+  border-color: var(--color-cyan);
+  color: var(--color-cyan-text);
+}
+
+.service-related__list a:hover i {
+  transform: translateX(3px);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -1607,10 +1762,10 @@ a.contact-info__value:hover {
 }
 
 /* Bootstrap's base .navbar-collapse sets flex-grow:1 for the mobile full-
-   width stack, and .navbar-expand-lg only resets flex-basis, not
+   width stack, and .navbar-expand-xl only resets flex-basis, not
    flex-grow — left alone, the collapse block swallows all the space
    between the logo and the CTA instead of sizing to the nav links. */
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .site-nav .navbar-collapse {
     flex-grow: 0;
   }
@@ -1631,7 +1786,8 @@ a.contact-info__value:hover {
     padding-block var(--transition-base);
 }
 
-.site-nav.is-scrolled {
+.site-nav.is-scrolled,
+.site-nav.has-open-menu {
   --bs-navbar-color: var(--color-dark);
   --bs-navbar-hover-color: var(--color-cyan-text);
   --bs-navbar-active-color: var(--color-cyan-text);
@@ -1649,6 +1805,24 @@ a.contact-info__value:hover {
 .site-nav .nav-link {
   position: relative;
   font-weight: 400;
+  white-space: nowrap;
+}
+
+.site-nav__brand {
+  flex-shrink: 0;
+}
+
+/* Seven items plus the logo and CTA only just fit on smaller desktops —
+   tighten the link spacing there rather than let labels wrap. */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .site-nav {
+    --bs-navbar-nav-link-padding-x: 0.65rem;
+  }
+
+  .site-nav .nav-link::after {
+    left: 0.65rem;
+    right: 0.65rem;
+  }
 }
 
 .site-nav .nav-link::after {
@@ -1677,7 +1851,7 @@ a.contact-info__value:hover {
   flex-shrink: 0;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .site-nav .navbar-collapse {
     --bs-navbar-color: var(--color-dark);
     --bs-navbar-hover-color: var(--color-cyan-text);
@@ -1705,6 +1879,224 @@ a.contact-info__value:hover {
     margin: 1rem 0 0;
     width: 100%;
     justify-content: center;
+  }
+
+  /* The services menu makes the mobile panel much taller than the
+     viewport — let the panel itself scroll instead of the page. */
+  .site-nav .navbar-collapse {
+    max-height: calc(100dvh - 140px);
+    overflow-y: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Services mega menu                                                     */
+/* ---------------------------------------------------------------------- */
+
+/* Bootstrap draws its dropdown caret with ::after, which the nav links
+   already use for the hover underline — keep the underline, drop the
+   caret's border triangle, and use an icon caret instead. */
+.site-nav .dropdown-toggle::after {
+  border: 0;
+  margin: 0;
+  vertical-align: initial;
+}
+
+.site-nav__caret {
+  display: inline-block;
+  font-size: 0.7em;
+  margin-left: 0.2rem;
+  transition: transform var(--transition-fast);
+}
+
+.site-nav .dropdown-toggle[aria-expanded="true"] .site-nav__caret {
+  transform: rotate(180deg);
+}
+
+.mega-menu {
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+}
+
+.mega-menu__group > summary {
+  list-style: none;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.mega-menu__group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mega-menu__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mega-menu__links a {
+  display: block;
+  color: var(--color-dark);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.mega-menu__links a:hover,
+.mega-menu__links a:focus-visible {
+  color: var(--color-cyan-text);
+}
+
+/* Desktop: a panel under the navbar — the category's sub-groups on the
+   left; hovering one shows its services on the right. */
+@media (min-width: 1200px) {
+  .site-nav__mega {
+    position: static;
+  }
+
+  .site-nav .dropdown-menu.mega-menu {
+    top: 100%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(calc(var(--container-max) - 2 * var(--gutter)), calc(100vw - 2 * var(--gutter)));
+    margin-top: 0.5rem;
+    box-shadow: var(--shadow-raised);
+    overflow: hidden;
+  }
+
+  .mega-menu.show {
+    display: grid;
+    grid-template-columns: minmax(260px, 32%) 1fr;
+    max-height: min(600px, calc(100vh - 150px));
+  }
+
+  .mega-menu__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.5rem 1.25rem;
+    background: var(--color-white);
+    overflow-y: auto;
+  }
+
+  .mega-menu__tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 0;
+    border-radius: var(--radius-btn);
+    background: transparent;
+    color: var(--color-dark);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    text-align: left;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .mega-menu__tab .bi {
+    font-size: 0.8rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .mega-menu__tab:hover {
+    background: var(--color-light);
+  }
+
+  /* Same cyan-on-navy pairing as .btn-primary — white text on this cyan
+     would fall short of contrast. */
+  .mega-menu__tab.active {
+    background: var(--color-cyan);
+    color: var(--color-navy);
+    font-weight: 600;
+  }
+
+  .mega-menu__tab.active .bi {
+    transform: translateX(3px);
+  }
+
+  .mega-menu__panes {
+    padding: 2rem 2.5rem;
+    background: var(--color-light);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* The sub-group title on the right; always open on desktop (script.js
+     keeps the details open), so it's a heading, not a toggle. */
+  .mega-menu__group > summary {
+    pointer-events: none;
+    margin-bottom: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-navy);
+  }
+
+  .mega-menu__links {
+    column-count: var(--cols, 1);
+    column-gap: 2.5rem;
+  }
+
+  .mega-menu__links li {
+    break-inside: avoid;
+  }
+
+  .mega-menu__links a {
+    padding: 0.4rem 0;
+  }
+}
+
+/* Mobile: inline inside the collapsed nav. The sub-group list on the left
+   is dropped; every sub-group shows as an expandable row instead. */
+@media (max-width: 1199.98px) {
+  .mega-menu {
+    background: transparent;
+    padding-bottom: 0.5rem;
+  }
+
+  .mega-menu__rail {
+    display: none;
+  }
+
+  .mega-menu .tab-content > .tab-pane {
+    display: block;
+  }
+
+  .mega-menu__group {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mega-menu__group > summary {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 0 0.7rem 0.75rem;
+    cursor: pointer;
+  }
+
+  .mega-menu__group > summary::after {
+    content: "\f282"; /* bi-chevron-down */
+    font-family: "bootstrap-icons";
+    margin-left: auto;
+    font-size: 0.75rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .mega-menu__group[open] > summary::after {
+    transform: rotate(180deg);
+  }
+
+  .mega-menu__links {
+    padding: 0 0 0.75rem 1.5rem;
+  }
+
+  .mega-menu__links a {
+    padding: 0.35rem 0;
+    color: var(--color-gray);
   }
 }
 
